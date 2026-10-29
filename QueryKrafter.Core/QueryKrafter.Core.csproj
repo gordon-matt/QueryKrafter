@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>QueryKrafter</RootNamespace>
+		<Description>The QueryKrafter rule model, shared by the browser and the server: jQuery QueryBuilder compatible JSON, validation, parameterized SQL for SQL Server, PostgreSQL, MySQL and SQLite, and LINQ expressions for IQueryable.</Description>
+		<IsTrimmable>true</IsTrimmable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Ardalis.Result" Version="10.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Locales\*.json" LogicalName="QueryKrafter.Locales.%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="QueryKrafter.Components" />
+		<InternalsVisibleTo Include="QueryKrafter.Tests" />
+	</ItemGroup>
+
+</Project>

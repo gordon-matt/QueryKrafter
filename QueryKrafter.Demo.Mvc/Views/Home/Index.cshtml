@@ -1,0 +1,40 @@
+@model RunResult
+@{
+    string rules = (string)(ViewData["Rules"] ?? SampleData.StarterRules);
+}
+
+<form method="post" action="/">
+    @* Name posts the live rules JSON with the form. SQL shown in the browser is a preview; the action regenerates it. *@
+    <component type="typeof(QueryBuilderElement)" render-mode="Server"
+               param-Config="@SampleData.ConfigJson"
+               param-Rules="@rules"
+               param-DesignMode="true"
+               param-Name='"rules"'
+               param-SqlDialect='"sqlite"'
+               param-ParameterStyle='"inline"' />
+    <p><button type="submit">Run on the server</button></p>
+</form>
+
+@if (Model is not null)
+{
+    <section class="demo-panel">
+        <h2>Result</h2>
+        @if (Model.Error is not null)
+        {
+            <p class="demo-errors">@Model.Error</p>
+        }
+        else
+        {
+            <pre>@(string.IsNullOrEmpty(Model.Sql) ? "(no filter)" : Model.Sql)</pre>
+            <table>
+                <thead><tr><th>Id</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr><td>@order.Id</td><td>@order.Customer</td><td>@order.Total</td><td>@order.Status</td></tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+}

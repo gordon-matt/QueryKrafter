@@ -1,0 +1,309 @@
+/*
+    QueryKrafter. Everything is scoped under .qk-root so the component neither inherits nor leaks
+    styles on the host's page. Override the --qk-* variables on .qk-root to theme it.
+*/
+
+.qk-root {
+    --qk-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --qk-radius: 10px;
+    --qk-radius-small: 7px;
+    --qk-control-height: 34px;
+
+    --qk-surface: #f7f8fa;
+    --qk-surface-raised: #ffffff;
+    --qk-field: #ffffff;
+    --qk-hover: #eef0f4;
+    --qk-border: #e1e4ea;
+    --qk-border-strong: #c9ced8;
+    --qk-line: #cfd4dd;
+    --qk-text: #171a21;
+    --qk-muted: #687182;
+    --qk-accent: #4f46e5;
+    --qk-accent-hover: #4338ca;
+    --qk-accent-text: #ffffff;
+    --qk-accent-soft: rgba(79, 70, 229, 0.09);
+    --qk-accent-ring: rgba(79, 70, 229, 0.28);
+    --qk-not: #c2410c;
+    --qk-not-soft: rgba(234, 88, 12, 0.1);
+    --qk-danger: #dc2626;
+    --qk-danger-soft: rgba(220, 38, 38, 0.08);
+    --qk-hidden: #7c3aed;
+    --qk-hidden-soft: rgba(124, 58, 237, 0.08);
+    --qk-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+
+    color-scheme: light;
+    color: var(--qk-text);
+    font: 14px/1.45 var(--qk-font);
+    -webkit-font-smoothing: antialiased;
+    text-align: start;
+}
+
+.qk-root[data-theme="dark"] {
+    --qk-surface: #12161c;
+    --qk-surface-raised: #1a1f27;
+    --qk-field: #12161c;
+    --qk-hover: #232a35;
+    --qk-border: #2a313d;
+    --qk-border-strong: #3a4352;
+    --qk-line: #3a4352;
+    --qk-text: #e6e9ef;
+    --qk-muted: #8d96a7;
+    --qk-accent: #818cf8;
+    --qk-accent-hover: #a5b4fc;
+    --qk-accent-text: #0e1116;
+    --qk-accent-soft: rgba(129, 140, 248, 0.14);
+    --qk-accent-ring: rgba(129, 140, 248, 0.35);
+    --qk-not: #fb923c;
+    --qk-not-soft: rgba(251, 146, 60, 0.14);
+    --qk-danger: #f87171;
+    --qk-danger-soft: rgba(248, 113, 113, 0.12);
+    --qk-hidden: #c4b5fd;
+    --qk-hidden-soft: rgba(196, 181, 253, 0.1);
+    --qk-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    .qk-root[data-theme="auto"] {
+        --qk-surface: #12161c;
+        --qk-surface-raised: #1a1f27;
+        --qk-field: #12161c;
+        --qk-hover: #232a35;
+        --qk-border: #2a313d;
+        --qk-border-strong: #3a4352;
+        --qk-line: #3a4352;
+        --qk-text: #e6e9ef;
+        --qk-muted: #8d96a7;
+        --qk-accent: #818cf8;
+        --qk-accent-hover: #a5b4fc;
+        --qk-accent-text: #0e1116;
+        --qk-accent-soft: rgba(129, 140, 248, 0.14);
+        --qk-accent-ring: rgba(129, 140, 248, 0.35);
+        --qk-not: #fb923c;
+        --qk-not-soft: rgba(251, 146, 60, 0.14);
+        --qk-danger: #f87171;
+        --qk-danger-soft: rgba(248, 113, 113, 0.12);
+        --qk-hidden: #c4b5fd;
+        --qk-hidden-soft: rgba(196, 181, 253, 0.1);
+        --qk-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        color-scheme: dark;
+    }
+}
+
+/* Follows Bootstrap 5.3's variables, including its data-bs-theme="dark" switch. */
+.qk-root[data-theme="bootstrap"] {
+    --qk-font: var(--bs-body-font-family);
+    --qk-radius: var(--bs-border-radius-lg);
+    --qk-radius-small: var(--bs-border-radius);
+    --qk-surface: var(--bs-tertiary-bg);
+    --qk-surface-raised: var(--bs-body-bg);
+    --qk-field: var(--bs-body-bg);
+    --qk-hover: rgba(var(--bs-emphasis-color-rgb), 0.06);
+    --qk-border: var(--bs-border-color);
+    --qk-border-strong: var(--bs-border-color);
+    --qk-line: var(--bs-border-color);
+    --qk-text: var(--bs-body-color);
+    --qk-muted: var(--bs-secondary-color);
+    --qk-accent: var(--bs-primary);
+    --qk-accent-hover: var(--bs-primary-text-emphasis);
+    --qk-accent-text: #ffffff;
+    --qk-accent-soft: rgba(var(--bs-primary-rgb), 0.12);
+    --qk-accent-ring: rgba(var(--bs-primary-rgb), 0.25);
+    --qk-not: var(--bs-warning-text-emphasis);
+    --qk-not-soft: var(--bs-warning-bg-subtle);
+    --qk-danger: var(--bs-danger);
+    --qk-danger-soft: var(--bs-danger-bg-subtle);
+    --qk-hidden: var(--bs-info-text-emphasis);
+    --qk-hidden-soft: var(--bs-info-bg-subtle);
+    color-scheme: normal;
+}
+
+.qk-element { display: contents; }
+
+.qk-root *, .qk-root *::before, .qk-root *::after { box-sizing: border-box; }
+.qk-root button, .qk-root input, .qk-root select, .qk-root textarea { font: inherit; color: inherit; margin: 0; }
+.qk-root .qk-icon { width: 16px; height: 16px; flex: none; }
+.qk-root .qk-spacer { flex: 1 1 auto; }
+
+/* ---------- Buttons ---------- */
+
+.qk-root .qk-button,
+.qk-root .qk-icon-button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    height: 30px; padding: 0 10px; border-radius: var(--qk-radius-small);
+    border: 1px solid var(--qk-border); background: var(--qk-surface-raised); color: var(--qk-text);
+    font-size: 13px; font-weight: 550; line-height: 1; cursor: pointer; white-space: nowrap;
+    transition: background-color .12s, border-color .12s, color .12s;
+}
+.qk-root .qk-button:hover { background: var(--qk-hover); border-color: var(--qk-border-strong); }
+.qk-root .qk-button .qk-icon { width: 15px; height: 15px; color: var(--qk-accent); }
+.qk-root .qk-button-ghost { background: transparent; border-color: transparent; }
+.qk-root .qk-button-ghost .qk-icon { color: var(--qk-muted); }
+
+.qk-root .qk-icon-button { width: 30px; padding: 0; background: transparent; border-color: transparent; color: var(--qk-muted); }
+.qk-root .qk-icon-button:hover { background: var(--qk-hover); color: var(--qk-text); }
+.qk-root .qk-icon-button.qk-delete:hover { background: var(--qk-danger-soft); color: var(--qk-danger); }
+.qk-root .qk-icon-button.qk-visibility.qk-active { background: var(--qk-hidden-soft); color: var(--qk-hidden); }
+
+.qk-root button:focus-visible,
+.qk-root .qk-select:focus-visible,
+.qk-root .qk-input:focus-visible,
+.qk-root .qk-choice input:focus-visible,
+.qk-root .qk-description:focus-visible {
+    outline: none; box-shadow: 0 0 0 3px var(--qk-accent-ring); border-color: var(--qk-accent);
+}
+.qk-root button:disabled { cursor: default; opacity: .55; }
+
+/* ---------- Group ---------- */
+
+.qk-root .qk-group {
+    position: relative;
+    background: var(--qk-surface);
+    border: 1px solid var(--qk-border);
+    border-inline-start: 3px solid var(--qk-accent);
+    border-radius: var(--qk-radius);
+    padding: 10px 12px 12px;
+}
+.qk-root .qk-group .qk-group { border-inline-start-color: color-mix(in srgb, var(--qk-accent) 55%, var(--qk-border)); }
+.qk-root .qk-group .qk-group .qk-group { border-inline-start-color: color-mix(in srgb, var(--qk-accent) 30%, var(--qk-border)); }
+.qk-root .qk-group.qk-group-not { border-inline-start-color: var(--qk-not); }
+.qk-root .qk-group.qk-invalid { border-color: var(--qk-danger); border-inline-start-color: var(--qk-danger); }
+
+.qk-root .qk-group-header { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.qk-root .qk-conditions { display: inline-flex; align-items: center; gap: 6px; }
+.qk-root .qk-actions { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+
+.qk-root .qk-segmented {
+    display: inline-flex; padding: 2px; gap: 2px;
+    background: var(--qk-surface-raised); border: 1px solid var(--qk-border); border-radius: var(--qk-radius-small);
+}
+.qk-root .qk-segmented button {
+    height: 26px; min-width: 46px; padding: 0 10px; border: 0; border-radius: 5px;
+    background: transparent; color: var(--qk-muted); font-size: 12px; font-weight: 700; letter-spacing: .04em; cursor: pointer;
+}
+.qk-root .qk-segmented button:hover:not(:disabled):not(.qk-active) { color: var(--qk-text); background: var(--qk-hover); }
+.qk-root .qk-segmented button.qk-active { background: var(--qk-accent); color: var(--qk-accent-text); }
+.qk-root .qk-segmented button:disabled.qk-active { opacity: 1; }
+
+.qk-root .qk-not {
+    height: 30px; padding: 0 10px; border-radius: var(--qk-radius-small);
+    border: 1px dashed var(--qk-border-strong); background: transparent; color: var(--qk-muted);
+    font-size: 12px; font-weight: 700; letter-spacing: .04em; cursor: pointer;
+}
+.qk-root .qk-not:hover:not(:disabled) { color: var(--qk-not); border-color: var(--qk-not); }
+.qk-root .qk-not.qk-active { border-style: solid; border-color: var(--qk-not); background: var(--qk-not-soft); color: var(--qk-not); }
+
+/* Children hang off a line, so nesting reads at a glance. */
+.qk-root .qk-group-body {
+    position: relative;
+    display: flex; flex-direction: column; gap: 8px;
+    margin-top: 10px; padding-inline-start: 18px;
+}
+.qk-root .qk-group-body::before {
+    content: ""; position: absolute; inset-inline-start: 6px; top: -4px; bottom: 18px;
+    border-inline-start: 2px solid var(--qk-line); border-radius: 1px;
+}
+.qk-root .qk-group-body > .qk-rule::before,
+.qk-root .qk-group-body > .qk-group::before {
+    content: ""; position: absolute; inset-inline-start: -13px; top: 18px; width: 11px;
+    border-top: 2px solid var(--qk-line);
+}
+
+.qk-root .qk-empty { padding: 8px 2px; color: var(--qk-muted); font-size: 13px; font-style: italic; }
+
+/* ---------- Rule ---------- */
+
+.qk-root .qk-rule {
+    position: relative;
+    background: var(--qk-surface-raised);
+    border: 1px solid var(--qk-border);
+    border-radius: var(--qk-radius-small);
+    padding: 6px 8px;
+    box-shadow: var(--qk-shadow);
+}
+.qk-root .qk-rule.qk-invalid { border-color: var(--qk-danger); }
+.qk-root .qk-rule-hidden {
+    border-style: dashed; border-color: var(--qk-hidden);
+    background: repeating-linear-gradient(-45deg, var(--qk-surface-raised) 0 10px, var(--qk-hidden-soft) 10px 20px);
+    box-shadow: none;
+}
+
+.qk-root .qk-rule-main { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; min-height: var(--qk-control-height); }
+
+.qk-root .qk-select,
+.qk-root .qk-input {
+    height: var(--qk-control-height); padding: 0 10px; min-width: 0;
+    border: 1px solid var(--qk-border-strong); border-radius: var(--qk-radius-small);
+    background-color: var(--qk-field); color: var(--qk-text);
+    transition: border-color .12s, box-shadow .12s;
+}
+.qk-root .qk-select:hover:not(:disabled),
+.qk-root .qk-input:hover:not(:disabled) { border-color: var(--qk-muted); }
+.qk-root .qk-select:disabled,
+.qk-root .qk-input:disabled { opacity: .7; cursor: default; background-color: var(--qk-surface); }
+
+.qk-root .qk-select { padding-inline-end: 28px; cursor: pointer; }
+.qk-root .qk-filter { flex: 0 1 220px; font-weight: 550; }
+.qk-root .qk-operator { flex: 0 1 170px; }
+.qk-root .qk-input { flex: 0 1 200px; }
+.qk-root .qk-input-number { flex-basis: 130px; }
+.qk-root .qk-input-date, .qk-root .qk-input-time { flex-basis: 150px; }
+.qk-root .qk-input-datetime-local { flex-basis: 210px; }
+.qk-root .qk-textarea { flex: 1 1 260px; height: auto; min-height: var(--qk-control-height); padding: 6px 10px; resize: vertical; }
+.qk-root .qk-multi { height: auto; padding: 4px; flex: 0 1 220px; }
+.qk-root .qk-multi option { padding: 3px 6px; border-radius: 4px; }
+
+.qk-root .qk-between { color: var(--qk-muted); font-size: 13px; }
+
+.qk-root .qk-choices { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.qk-root .qk-choices.qk-vertical { flex-direction: column; align-items: flex-start; gap: 4px; }
+.qk-root .qk-choice { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+.qk-root .qk-choice input { width: 16px; height: 16px; accent-color: var(--qk-accent); cursor: pointer; }
+
+.qk-root .qk-description { display: inline-flex; color: var(--qk-muted); cursor: help; border-radius: 50%; }
+.qk-root .qk-badge {
+    display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 650; letter-spacing: .02em;
+    background: var(--qk-hidden-soft); color: var(--qk-hidden); border: 1px solid currentColor;
+}
+
+/* ---------- Messages ---------- */
+
+.qk-root .qk-error {
+    display: flex; align-items: center; gap: 6px; margin-top: 6px;
+    color: var(--qk-danger); font-size: 12.5px; font-weight: 500;
+}
+.qk-root .qk-error .qk-icon { width: 14px; height: 14px; }
+.qk-root .qk-group > .qk-error { margin-top: 8px; }
+
+.qk-root .qk-alert {
+    display: flex; align-items: center; gap: 8px; padding: 9px 12px; margin-bottom: 10px;
+    border-radius: var(--qk-radius-small); background: var(--qk-danger-soft); color: var(--qk-danger); font-size: 13px;
+}
+
+/* ---------- Drag and drop ---------- */
+
+.qk-root .qk-handle {
+    display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 28px;
+    color: var(--qk-muted); cursor: grab; border-radius: 5px; opacity: .7;
+}
+.qk-root .qk-handle:hover { opacity: 1; background: var(--qk-hover); }
+.qk-root .qk-handle:active { cursor: grabbing; }
+
+.qk-root .qk-drop-zone {
+    display: flex; align-items: center; justify-content: center; height: 28px;
+    border: 1.5px dashed var(--qk-border-strong); border-radius: var(--qk-radius-small);
+    color: var(--qk-muted); font-size: 12px; transition: background-color .1s, border-color .1s, height .1s;
+}
+.qk-root .qk-drop-zone.qk-drop-active { height: 38px; border-color: var(--qk-accent); background: var(--qk-accent-soft); color: var(--qk-accent); }
+.qk-root .qk-drop-label { pointer-events: none; }
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 560px) {
+    .qk-root .qk-filter, .qk-root .qk-operator, .qk-root .qk-input, .qk-root .qk-multi { flex: 1 1 100%; }
+    .qk-root .qk-group-body { padding-inline-start: 12px; }
+    .qk-root .qk-group-body::before { inset-inline-start: 3px; }
+    .qk-root .qk-group-body > .qk-rule::before, .qk-root .qk-group-body > .qk-group::before { inset-inline-start: -9px; width: 7px; }
+    .qk-root .qk-button span { display: none; }
+}

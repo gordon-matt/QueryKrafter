@@ -1,0 +1,14 @@
+<div @ref="rootElement" @attributes="AdditionalAttributes"
+     class="qk-root @(DesignMode ? "qk-design" : null) @(ReadOnly ? "qk-readonly" : null) @Class"
+     data-theme="@Theme" dir="@(Text.IsRightToLeft ? "rtl" : "ltr")" lang="@Text.Language">
+    <CascadingValue Value="this" IsFixed="true">
+        @if (HiddenErrorCount is > 0 and var count)
+        {
+            <div class="qk-alert" role="alert">
+                <Icon Name="alert" />
+                <span>@Text.Format("errors.hidden", count)</span>
+            </div>
+        }
+        <QueryGroupView Group="root" Level="1" />
+    </CascadingValue>
+</div>

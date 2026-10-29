@@ -1,0 +1,11 @@
+body { margin: 0; background: #f5f6f8; color: #171a21; font: 15px/1.5 system-ui, sans-serif; }
+.demo-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 28px; background: #fff; border-bottom: 1px solid #e1e4ea; }
+.demo-nav span, .demo-nav label { color: #687182; font-size: 13px; font-weight: 500; }
+.demo-nav label { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: inherit; }
+.demo-main { max-width: 1100px; margin: 0 auto; padding: 28px; display: grid; gap: 20px; }
+.demo-panel { background: #fff; border: 1px solid #e1e4ea; border-radius: 10px; padding: 14px 16px; }
+.demo-panel h2 { margin: 0 0 10px; font-size: 14px; color: #687182; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #eef0f4; font-size: 14px; }
+pre { margin: 0; white-space: pre-wrap; font-size: 12.5px; }
+.demo-errors { color: #dc2626; }

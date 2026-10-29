@@ -1,0 +1,18 @@
+@* The builder with string and boolean parameters, for the custom element and MVC pages. *@
+<div @ref="host" class="qk-element">
+    @if (configError is not null)
+    {
+        <div class="qk-root" data-theme="@Theme">
+            <div class="qk-alert" role="alert"><Icon Name="alert" /><span>@configError</span></div>
+        </div>
+    }
+    else
+    {
+        <QueryBuilder @ref="builder" Config="config" Rules="rules" OnChanged="OnChangedAsync" DesignMode="DesignMode" ReadOnly="ReadOnly"
+                      Theme="@Theme" Language="@Language" ShowErrors="ShowErrors" ShowAllErrors="ShowAllErrors" Class="@Class" />
+    }
+    @if (!string.IsNullOrEmpty(Name))
+    {
+        <input type="hidden" name="@Name" value="@rulesJson" />
+    }
+</div>

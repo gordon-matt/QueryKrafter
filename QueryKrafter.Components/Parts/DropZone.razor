@@ -1,0 +1,12 @@
+@* Highlighted by querykrafter.js while dragged over; .NET only handles the drop. *@
+<div class="qk-drop-zone" @ondrop="() => Builder.DropAsync(Group, Index)" @ondrop:preventDefault="true">
+    <span class="qk-drop-label">@Builder.Text["dropHere"]</span>
+</div>
+
+@code {
+    [CascadingParameter] public QueryBuilder Builder { get; set; } = default!;
+
+    [Parameter, EditorRequired] public QueryGroup Group { get; set; } = default!;
+
+    [Parameter] public int Index { get; set; }
+}

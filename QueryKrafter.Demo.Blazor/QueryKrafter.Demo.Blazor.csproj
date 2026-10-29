@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\QueryKrafter.Components\QueryKrafter.Components.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="QueryKrafter" />
+		<Using Include="QueryKrafter.Components" />
+		<Using Include="QueryKrafter.Linq" />
+		<Using Include="QueryKrafter.Models" />
+		<Using Include="QueryKrafter.Serialization" />
+		<Using Include="QueryKrafter.Sql" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+---
+description: Which of my other projects this repo depends on and where their source lives. Read before using or investigating any internal library/package.
+alwaysApply: false
+---
+
+Shared coding conventions live in Blueprint/.cursor/rules/conventions.mdc (absolute path: D:\Source\GitHub\Blueprint\.cursor\rules\conventions.mdc). Read it before writing or changing code.
+
+@../../Blueprint/.cursor/rules/conventions.mdc
+
+## Internal dependencies
+
+None.
+
+## Unresolved
+
+None.
+
+## Reverse dependencies
+
+None.
+
+TODO: Queryz to be added here later

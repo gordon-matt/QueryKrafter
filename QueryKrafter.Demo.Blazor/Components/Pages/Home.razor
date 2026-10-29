@@ -1,0 +1,47 @@
+@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>QueryKrafter</PageTitle>
+
+<div class="demo-nav" style="margin: -28px -28px 0; border-radius: 0;">
+    <span></span>
+    <label><input type="checkbox" checked="@designMode" @onchange="e => designMode = e.Value is true" /> Design mode</label>
+</div>
+
+<QueryBuilder Config="SampleData.Config" @bind-Rules="rules" OnChanged="OnChanged" DesignMode="designMode" Theme="light" />
+
+<section class="demo-panel">
+    <h2>Matching orders</h2>
+    @if (error is not null)
+    {
+        <p class="demo-errors">@error</p>
+    }
+    else
+    {
+        <table>
+            <thead><tr><th>Id</th><th>Customer</th><th>Total</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody>
+                @foreach (var order in matches)
+                {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.Customer</td>
+                        <td>@order.Total</td>
+                        <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                        <td>@order.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>
+
+<section class="demo-panel">
+    <h2>SQL, generated on the server</h2>
+    <pre>@(sql ?? "(no filter)")</pre>
+</section>
+
+<section class="demo-panel">
+    <h2>Rules</h2>
+    <pre>@json</pre>
+</section>

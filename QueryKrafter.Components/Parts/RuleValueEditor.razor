@@ -1,0 +1,92 @@
+@* The inputs for a rule's value: one per operator input, each a list for operators such as "in". *@
+@for (int index = 0; index < Operator.InputCount; index++)
+{
+    int input = index;
+    var chosen = Texts(input);
+    if (input > 0)
+    {
+        <span class="qk-between">@Builder.Text["rule.and"]</span>
+    }
+
+    switch (Filter.EffectiveInput)
+    {
+        case QueryInputType.Select:
+            if (IsMultiSelect)
+            {
+                <select class="qk-select qk-multi" multiple size="@Math.Clamp(Options.Count, 2, 6)" aria-label="@Filter.DisplayLabel"
+                        disabled="@Disabled" @onchange="e => OnSelectChangedAsync(input, e)">
+                    @SelectOptions(chosen, markSelected: true)
+                </select>
+            }
+            else
+            {
+                <select class="qk-select" aria-label="@Filter.DisplayLabel" value="@(chosen.Count > 0 ? chosen[0] : string.Empty)"
+                        disabled="@Disabled" @onchange="e => OnSelectChangedAsync(input, e)">
+                    <option value="">@Builder.Text["rule.choose"]</option>
+                    @SelectOptions(chosen, markSelected: false)
+                </select>
+            }
+            break;
+
+        case QueryInputType.Radio:
+            <div class="qk-choices @(Filter.Vertical ? "qk-vertical" : null)" role="radiogroup" aria-label="@Filter.DisplayLabel">
+                @foreach (var option in Options)
+                {
+                    <label class="qk-choice">
+                        <input type="radio" name="@($"{id}-{input}")" value="@option.Value" checked="@chosen.Contains(option.Value)" disabled="@Disabled"
+                               @onchange="() => SetTextAsync(input, option.Value)" />
+                        <span>@option.Label</span>
+                    </label>
+                }
+            </div>
+            break;
+
+        case QueryInputType.Checkbox:
+            <div class="qk-choices @(Filter.Vertical ? "qk-vertical" : null)" role="group" aria-label="@Filter.DisplayLabel">
+                @foreach (var option in Options)
+                {
+                    <label class="qk-choice">
+                        <input type="checkbox" value="@option.Value" checked="@chosen.Contains(option.Value)" disabled="@Disabled"
+                               @onchange="e => ToggleAsync(input, option.Value, e.Value is true)" />
+                        <span>@option.Label</span>
+                    </label>
+                }
+            </div>
+            break;
+
+        case QueryInputType.TextArea:
+            <textarea class="qk-input qk-textarea" rows="@(Filter.Rows ?? 2)" aria-label="@Filter.DisplayLabel" placeholder="@Placeholder"
+                      disabled="@Disabled" value="@Text(input)" @onchange="e => SetTextAsync(input, e.Value as string)"></textarea>
+            break;
+
+        default:
+            <input type="@HtmlType" class="qk-input @($"qk-input-{HtmlType}")" aria-label="@Filter.DisplayLabel" placeholder="@Placeholder"
+                   disabled="@Disabled" value="@Text(input)" step="@Step" min="@Bound(Filter.Validation.Min)" max="@Bound(Filter.Validation.Max)"
+                   @onchange="e => SetTextAsync(input, e.Value as string)" />
+            break;
+    }
+}
+
+@code {
+    private RenderFragment SelectOptions(IReadOnlyList<string> chosen, bool markSelected) => @<text>
+        @foreach (var section in Options.GroupBy(o => o.Group))
+        {
+            if (section.Key is null)
+            {
+                @foreach (var option in section)
+                {
+                    <option value="@option.Value" selected="@(markSelected && chosen.Contains(option.Value))">@option.Label</option>
+                }
+            }
+            else
+            {
+                <optgroup label="@Builder.Config.GroupLabel(section.Key)">
+                    @foreach (var option in section)
+                    {
+                        <option value="@option.Value" selected="@(markSelected && chosen.Contains(option.Value))">@option.Label</option>
+                    }
+                </optgroup>
+            }
+        }
+    </text>;
+}

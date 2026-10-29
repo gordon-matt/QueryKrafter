@@ -1,0 +1,131 @@
+@* One rule: field, operator and value, with its design-mode hide toggle and its error. *@
+@{
+    var config = Builder.Config;
+    var text = Builder.Text;
+    var filter = config.FindFilter(Rule.Id);
+    IReadOnlyList<QueryOperator> operators = filter is null ? [] : config.OperatorsFor(filter);
+    var op = operators.FirstOrDefault(o => string.Equals(o.Type, Rule.Operator, StringComparison.Ordinal));
+    var error = Builder.VisibleError(Rule);
+    bool readOnly = Builder.ReadOnly;
+    bool unknownFilter = filter is null && !string.IsNullOrEmpty(Rule.Id);
+}
+
+<div class="qk-rule @(Rule.Hidden ? "qk-rule-hidden" : null) @(error is not null ? "qk-invalid" : null)">
+    <div class="qk-rule-main">
+        @if (Builder.CanDrag(Rule))
+        {
+            <span class="qk-handle" draggable="true" title="@text["rule.drag"]"
+                  @ondragstart="() => Builder.StartDrag(Rule)" @ondragend="Builder.EndDrag">
+                <Icon Name="grip" />
+            </span>
+        }
+
+        <select class="qk-select qk-filter" aria-label="@text["rule.field"]" value="@(Rule.Id ?? string.Empty)"
+                disabled="@(readOnly || Rule.Flags.FilterReadOnly)"
+                @onchange="e => Builder.ChangeFilterAsync(Rule, e.Value as string)">
+            @if (config.DisplayEmptyFilter || string.IsNullOrEmpty(Rule.Id))
+            {
+                <option value="">@text["rule.emptyFilter"]</option>
+            }
+            @if (unknownFilter)
+            {
+                <option value="@Rule.Id" disabled>@Rule.Id</option>
+            }
+            @foreach (var section in Builder.FilterSections)
+            {
+                if (section.Group is null)
+                {
+                    @FilterOptions(section.Items)
+                }
+                else
+                {
+                    <optgroup label="@config.GroupLabel(section.Group)">@FilterOptions(section.Items)</optgroup>
+                }
+            }
+        </select>
+
+        @if (filter is not null)
+        {
+            <select class="qk-select qk-operator" aria-label="@text["rule.operator"]" value="@(op?.Type ?? string.Empty)"
+                    disabled="@(readOnly || Rule.Flags.OperatorReadOnly)"
+                    @onchange="e => Builder.ChangeOperatorAsync(Rule, e.Value as string)">
+                @if (op is null)
+                {
+                    <option value="">@text["rule.choose"]</option>
+                }
+                @foreach (var section in OptionSection<QueryOperator>.Build(operators, o => o.Group, text.OperatorLabel, sort: false, text.Culture))
+                {
+                    if (section.Group is null)
+                    {
+                        @OperatorOptions(section.Items)
+                    }
+                    else
+                    {
+                        <optgroup label="@config.GroupLabel(section.Group)">@OperatorOptions(section.Items)</optgroup>
+                    }
+                }
+            </select>
+
+            @if (op is { InputCount: > 0 })
+            {
+                <RuleValueEditor Rule="Rule" Filter="filter" Operator="op" Disabled="@(readOnly || Rule.Flags.ValueReadOnly)" />
+            }
+        }
+
+        <span class="qk-spacer"></span>
+
+        @if (!string.IsNullOrWhiteSpace(filter?.Description))
+        {
+            <span class="qk-description" title="@filter.Description" aria-label="@text["rule.description"]" tabindex="0">
+                <Icon Name="info" />
+            </span>
+        }
+        @if (Builder.DesignMode)
+        {
+            @if (Rule.Hidden)
+            {
+                <span class="qk-badge">@text["rule.hidden"]</span>
+            }
+            @if (!readOnly)
+            {
+                <button type="button" class="qk-icon-button qk-visibility @(Rule.Hidden ? "qk-active" : null)"
+                        title="@text[Rule.Hidden ? "rule.show" : "rule.hide"]" aria-label="@text[Rule.Hidden ? "rule.show" : "rule.hide"]"
+                        aria-pressed="@(Rule.Hidden ? "true" : "false")" @onclick="() => Builder.ToggleHiddenAsync(Rule)">
+                    <Icon Name="@(Rule.Hidden ? "eye-off" : "eye")" />
+                </button>
+            }
+        }
+        @if (Builder.CanDelete(Rule))
+        {
+            <button type="button" class="qk-icon-button qk-delete" title="@text["rule.delete"]" aria-label="@text["rule.delete"]"
+                    @onclick="() => Builder.DeleteAsync(Rule)">
+                <Icon Name="x" />
+            </button>
+        }
+    </div>
+
+    @if (error is not null)
+    {
+        <div class="qk-error" role="alert"><Icon Name="alert" /><span>@Builder.Message(error)</span></div>
+    }
+</div>
+
+@code {
+    [CascadingParameter] public QueryBuilder Builder { get; set; } = default!;
+
+    [Parameter, EditorRequired] public QueryRule Rule { get; set; } = default!;
+
+    private RenderFragment FilterOptions(IReadOnlyList<QueryFilter> filters) => @<text>
+        @foreach (var filter in filters)
+        {
+            <option value="@filter.Id" disabled="@Builder.IsFilterTaken(filter, Rule)">@filter.DisplayLabel</option>
+        }
+    </text>;
+
+    private RenderFragment OperatorOptions(IReadOnlyList<QueryOperator> operators) => @<text>
+        @foreach (var op in operators)
+        {
+            <option value="@op.Type">@Builder.Text.OperatorLabel(op)</option>
+        }
+    </text>;
+}

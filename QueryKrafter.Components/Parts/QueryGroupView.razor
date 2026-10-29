@@ -1,0 +1,125 @@
+@* A group: its NOT toggle and condition, its actions, and its rules and groups. *@
+@{
+    bool isRoot = Level == 1;
+    bool logicLocked = Builder.IsLogicLocked(Group);
+    bool canDrop = Builder.IsDragging && Builder.CanDropInto(Group, Level);
+    var error = Builder.VisibleError(Group);
+    var text = Builder.Text;
+    var config = Builder.Config;
+}
+
+<div class="qk-group @(isRoot ? "qk-group-root" : null) @(Group.Not ? "qk-group-not" : null) @(error is not null ? "qk-invalid" : null)"
+     data-level="@Level" role="group">
+    <div class="qk-group-header">
+        @if (Builder.CanDrag(Group))
+        {
+            <span class="qk-handle" draggable="true" title="@text["group.drag"]"
+                  @ondragstart="() => Builder.StartDrag(Group)" @ondragend="Builder.EndDrag">
+                <Icon Name="grip" />
+            </span>
+        }
+
+        <div class="qk-conditions">
+            @if (config.AllowNot)
+            {
+                <button type="button" class="qk-not @(Group.Not ? "qk-active" : null)" title="@text["group.notTitle"]"
+                        aria-pressed="@(Group.Not ? "true" : "false")" disabled="@logicLocked"
+                        @onclick="() => Builder.ToggleNotAsync(Group)">
+                    @text["group.not"]
+                </button>
+            }
+            <div class="qk-segmented" role="radiogroup" aria-label="@text["group.condition"]">
+                @foreach (string condition in config.Conditions)
+                {
+                    bool active = string.Equals(condition, Group.Condition, StringComparison.OrdinalIgnoreCase);
+                    <button type="button" role="radio" class="@(active ? "qk-active" : null)"
+                            aria-checked="@(active ? "true" : "false")" disabled="@(logicLocked && !active)"
+                            @onclick="() => logicLocked || active ? Task.CompletedTask : Builder.SetConditionAsync(Group, condition)">
+                        @text.ConditionLabel(condition)
+                    </button>
+                }
+            </div>
+        </div>
+
+        <span class="qk-spacer"></span>
+
+        <div class="qk-actions">
+            @if (Builder.CanAddRule(Group))
+            {
+                <button type="button" class="qk-button" @onclick="() => Builder.AddRuleAsync(Group)">
+                    <Icon Name="plus" /><span>@text["group.addRule"]</span>
+                </button>
+            }
+            @if (Builder.CanAddGroup(Group, Level))
+            {
+                <button type="button" class="qk-button" @onclick="() => Builder.AddGroupAsync(Group)">
+                    <Icon Name="group" /><span>@text["group.addGroup"]</span>
+                </button>
+            }
+            @if (config.AllowInvert && !logicLocked && Group.Rules.Count > 0)
+            {
+                <button type="button" class="qk-button qk-button-ghost" title="@text["group.invertTitle"]" @onclick="() => Builder.InvertAsync(Group)">
+                    <Icon Name="invert" /><span>@text["group.invert"]</span>
+                </button>
+            }
+            @if (Builder.CanDelete(Group))
+            {
+                <button type="button" class="qk-icon-button qk-delete" title="@text["group.delete"]" aria-label="@text["group.delete"]"
+                        @onclick="() => Builder.DeleteAsync(Group)">
+                    <Icon Name="trash" />
+                </button>
+            }
+        </div>
+    </div>
+
+    @if (error is not null)
+    {
+        <div class="qk-error" role="alert"><Icon Name="alert" /><span>@Builder.Message(error)</span></div>
+    }
+
+    <div class="qk-group-body">
+        @if (canDrop)
+        {
+            <DropZone Group="Group" Index="0" />
+        }
+        @{
+            bool anyShown = false;
+        }
+        @for (int i = 0; i < Group.Rules.Count; i++)
+        {
+            var node = Group.Rules[i];
+            if (!Builder.IsVisible(node))
+            {
+                continue;
+            }
+
+            anyShown = true;
+            if (node is QueryGroup child)
+            {
+                <QueryGroupView @key="child" Group="child" Level="Level + 1" />
+            }
+            else if (node is QueryRule rule)
+            {
+                <QueryRuleView @key="rule" Rule="rule" />
+            }
+
+            if (canDrop)
+            {
+                <DropZone @key="(node, 0)" Group="Group" Index="i + 1" />
+            }
+        }
+        @if (!anyShown && !canDrop)
+        {
+            <div class="qk-empty">@text["group.empty"]</div>
+        }
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] public QueryBuilder Builder { get; set; } = default!;
+
+    [Parameter, EditorRequired] public QueryGroup Group { get; set; } = default!;
+
+    /// <summary>The root is 1.</summary>
+    [Parameter] public int Level { get; set; } = 1;
+}

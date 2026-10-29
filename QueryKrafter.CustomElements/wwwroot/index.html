@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QueryKrafter custom element</title>
+    <base href="/" />
+    <link rel="stylesheet" href="_content/QueryKrafter.Components/querykrafter.css" />
+    <style>
+        body { margin: 0; background: #f5f6f8; color: #171a21; font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+        .site-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 28px; background: #fff; border-bottom: 1px solid #e1e4ea; }
+        .site-nav strong span { margin-left: 6px; font-weight: 500; color: #687182; font-size: 13px; }
+        .site-nav label { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; }
+        .site-main { max-width: 1100px; margin: 0 auto; padding: 28px; display: grid; gap: 20px; }
+        pre { margin: 0; padding: 14px 16px; background: #fff; border: 1px solid #e1e4ea; border-radius: 10px; overflow: auto; font-size: 12.5px; }
+        h2 { margin: 0 0 8px; font-size: 14px; color: #687182; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <header class="site-nav">
+        <strong>QueryKrafter <span>plain HTML, custom element</span></strong>
+        <label><input type="checkbox" id="design" checked /> Design mode</label>
+    </header>
+
+    <main class="site-main">
+        <qk-query-builder id="builder" design-mode="true" sql-dialect="sqlserver" parameter-style="inline"></qk-query-builder>
+        <section>
+            <h2>SQL preview</h2>
+            <pre id="sql">-</pre>
+        </section>
+        <section>
+            <h2>Rules</h2>
+            <pre id="rules">-</pre>
+        </section>
+    </main>
+
+    <script>
+        const config = {
+            allowNot: true,
+            allowInvert: true,
+            allowSorting: true,
+            filters: [
+                { id: 'customer', label: 'Customer', type: 'string', group: 'Order' },
+                { id: 'total', label: 'Total', type: 'double', group: 'Order', validation: { min: '0' } },
+                { id: 'orderDate', label: 'Order date', type: 'date', group: 'Order' },
+                { id: 'shipped', label: 'Shipped', type: 'boolean', group: 'Order' },
+                {
+                    id: 'status', label: 'Status', type: 'integer', input: 'checkbox', group: 'Order',
+                    operators: ['in', 'not_in'],
+                    values: [{ value: 1, label: 'Pending' }, { value: 2, label: 'Shipped' }, { value: 3, label: 'Cancelled' }]
+                },
+                { id: 'city', label: 'City', type: 'string', group: 'Customer' }
+            ]
+        };
+
+        const builder = document.getElementById('builder');
+        builder.setAttribute('config', JSON.stringify(config));
+        builder.setAttribute('rules', JSON.stringify({
+            condition: 'AND',
+            rules: [
+                { id: 'total', operator: 'greater', value: 100 },
+                { id: 'status', operator: 'in', value: [1, 2], data: { show: false } }
+            ]
+        }));
+
+        document.getElementById('design').addEventListener('change', e => builder.setAttribute('design-mode', String(e.target.checked)));
+
+        builder.addEventListener('qk-changed', e => {
+            const { rules, isValid, errors, sql } = e.detail;
+            document.getElementById('rules').textContent = JSON.stringify(rules, null, 2);
+            document.getElementById('sql').textContent = isValid
+                ? (sql?.text || '(no filter)')
+                : errors.map(error => `${error.path || 'root'}: ${error.message}`).join('\n');
+        });
+    </script>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>

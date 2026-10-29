@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Demos/">
+    <Project Path="QueryKrafter.Demo.Blazor/QueryKrafter.Demo.Blazor.csproj" />
+    <Project Path="QueryKrafter.Demo.Mvc/QueryKrafter.Demo.Mvc.csproj" />
+    <Project Path="querykrafter.demo.react/querykrafter.demo.react.esproj">
+      <Build />
+      <Deploy />
+    </Project>
+  </Folder>
+  <Project Path="QueryKrafter.Core/QueryKrafter.Core.csproj" />
+  <Project Path="QueryKrafter.Components/QueryKrafter.Components.csproj" />
+  <Project Path="QueryKrafter.CustomElements/QueryKrafter.CustomElements.csproj" />
+  <Project Path="QueryKrafter.Tests/QueryKrafter.Tests.csproj" />
+</Solution>

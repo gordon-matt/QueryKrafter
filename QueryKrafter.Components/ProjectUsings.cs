@@ -1,0 +1,10 @@
+global using System.Globalization;
+global using System.Text.Json;
+global using System.Text.Json.Nodes;
+global using Microsoft.AspNetCore.Components;
+global using Microsoft.JSInterop;
+global using QueryKrafter.Localization;
+global using QueryKrafter.Models;
+global using QueryKrafter.Serialization;
+global using QueryKrafter.Validation;
+global using QueryKrafter.Values;
