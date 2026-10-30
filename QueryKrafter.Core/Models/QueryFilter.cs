@@ -58,6 +58,12 @@ public sealed record QueryFilter
     /// <summary>A heading the filter is listed under.</summary>
     public string? Group { get; init; }
 
+    /// <summary>
+    /// Keeps the field for rules that already use it and for SQL, but leaves it out of the field
+    /// list. A runner must not be able to pick a column the designer hid.
+    /// </summary>
+    public bool HideFromPicker { get; init; }
+
     /// <summary>Help text shown beside the rule.</summary>
     public string? Description { get; init; }
 

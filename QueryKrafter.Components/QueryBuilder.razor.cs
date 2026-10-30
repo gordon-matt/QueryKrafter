@@ -95,7 +95,12 @@ public sealed partial class QueryBuilder : IAsyncDisposable
         if (!ReferenceEquals(Config, appliedConfig) || languageChanged)
         {
             appliedConfig = Config;
-            filterSections = OptionSection<QueryFilter>.Build(Config.Filters, f => f.Group, f => f.DisplayLabel, Config.SortFilters, text.Culture);
+            filterSections = OptionSection<QueryFilter>.Build(
+                Config.Filters.Where(filter => !filter.HideFromPicker).ToList(),
+                f => f.Group,
+                f => f.DisplayLabel,
+                Config.SortFilters,
+                text.Culture);
         }
 
         // The host binding back the tree raised through RulesChanged must not reset the builder.
