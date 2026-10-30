@@ -1,4 +1,4 @@
-<img src="https://github.com/gordon-matt/QueryKrafter/blob/main/_Misc/Logo_Dark.png" alt="Logo" width="350" />
+<img src="https://github.com/gordon-matt/QueryKrafter/blob/master/_Misc/Logo.png" alt="Logo" width="450" />
 
 A query builder for .NET. People compose rules over fields you define; you turn those rules into SQL or a LINQ predicate on the server, from a configuration you trust.
 
