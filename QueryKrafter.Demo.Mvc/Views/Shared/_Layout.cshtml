@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QueryKrafter MVC demo</title>
     <base href="~/" />
+    <link rel="icon" type="image/png" href="~/img/Icon.png" asp-append-version="true" />
     <link rel="stylesheet" href="~/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/_content/QueryKrafter.Components/querykrafter.css" asp-append-version="true" />
 </head>
 <body>
     <header class="demo-nav">
-        <strong>QueryKrafter <span>MVC demo</span></strong>
+        <strong class="demo-brand">
+            <img src="~/img/Logo.png" alt="QueryKrafter" class="demo-logo" asp-append-version="true" />
+            <span>MVC demo</span>
+        </strong>
     </header>
     <main class="demo-main">
         @RenderBody()

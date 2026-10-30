@@ -2,6 +2,9 @@
 
 A query builder for .NET. People compose rules over fields you define; you turn those rules into SQL or a LINQ predicate on the server, from a configuration you trust.
 
+## Screenshot
+<img src="https://github.com/gordon-matt/QueryKrafter/blob/master/_Misc/Screenshot.png" alt="Blazor Demo Screenshot" width="100%" />
+
 The same component works in **Blazor**, **ASP.NET Core MVC / Razor Pages**, and, as a custom element, in **React or any plain HTML page**.
 
 Rules are stored in the [jQuery QueryBuilder](https://querybuilder.js.org/) JSON format, including the design-mode fork's `data.show: false` for rules that stay in the query but are hidden from the people running it.

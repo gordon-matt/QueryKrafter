@@ -37,7 +37,10 @@ export default function App() {
   return (
     <>
       <header>
-        <strong>QueryKrafter <span>React demo</span></strong>
+        <strong className="brand">
+          <img src="/img/Logo.png" alt="QueryKrafter" />
+          <span>React demo</span>
+        </strong>
         <label>
           <input type="checkbox" checked={designMode} onChange={event => setDesignMode(event.target.checked)} />
           Design mode
