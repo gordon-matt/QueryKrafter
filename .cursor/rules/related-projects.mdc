@@ -17,6 +17,4 @@ None.
 
 ## Reverse dependencies
 
-None.
-
-TODO: Queryz to be added here later
+- Queryz (`D:\Source\GitHub\Tools\Queryz`) references `QueryKrafter.Components` from the Blazor host and `QueryKrafter.Core` from `Queryz.Services`. Report filters are QueryKrafter rules; SQL is generated on the server.
