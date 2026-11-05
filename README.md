@@ -164,6 +164,9 @@ Attributes are kebab-case: `design-mode`, `read-only`, `sql-dialect`, `parameter
 
 English, German, Spanish, French, Brazilian Portuguese, and Simplified Chinese are built in. `AddQueryKrafter(o => o.Directory = "Locales")` loads extra `{tag}.json` files, which override the built-in strings key by key.
 
+## Credit
+
+Inspired by [jQuery QueryBuilder](https://querybuilder.js.org/) and uses the same JSON format for storing query filters.
 
 ## Support
 
