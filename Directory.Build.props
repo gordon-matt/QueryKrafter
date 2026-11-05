@@ -8,7 +8,21 @@
 		<Product>QueryKrafter</Product>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageTags>query-builder;filter-builder;sql;linq;blazor;mvc;react;custom-elements</PackageTags>
+		<PackageProjectUrl>https://github.com/gordon-matt/QueryKrafter</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/gordon-matt/QueryKrafter</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageIcon>Icon.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+
+	<!-- Demo and test projects are never packed; everything else gets the icon and README in its package. -->
+	<PropertyGroup Condition="'$(IsPackable)' == ''">
+		<IsPackable Condition="$(MSBuildProjectName.Contains('.Demo.')) Or $(MSBuildProjectName.EndsWith('.Tests'))">false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(IsPackable)' != 'false'">
+		<None Include="$(MSBuildThisFileDirectory)_Misc\Icon.png" Pack="true" PackagePath="\" Visible="false" />
+		<None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" Visible="false" />
+	</ItemGroup>
 
 </Project>

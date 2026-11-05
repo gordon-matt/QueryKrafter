@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<RootNamespace>QueryKrafter.Components</RootNamespace>
 		<Description>The QueryKrafter query builder component, for Blazor Server, Blazor WebAssembly and MVC, and as a custom element for React and plain HTML.</Description>
+		<PackageTags>query-builder;filter-builder;blazor;razor-components;aspnetcore-mvc;custom-elements;querykrafter</PackageTags>
 		<IsTrimmable>true</IsTrimmable>
 	</PropertyGroup>
 

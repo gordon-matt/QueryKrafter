@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<RootNamespace>QueryKrafter</RootNamespace>
 		<Description>The QueryKrafter rule model, shared by the browser and the server: jQuery QueryBuilder compatible JSON, validation, parameterized SQL for SQL Server, PostgreSQL, MySQL and SQLite, and LINQ expressions for IQueryable.</Description>
+		<PackageTags>query-builder;filter-builder;jquery-querybuilder;sql;linq;iqueryable;parameterized-sql;querykrafter</PackageTags>
 		<IsTrimmable>true</IsTrimmable>
 	</PropertyGroup>
 

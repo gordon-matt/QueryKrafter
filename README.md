@@ -1,9 +1,9 @@
-<img src="https://github.com/gordon-matt/QueryKrafter/blob/master/_Misc/Logo.png" alt="Logo" width="450" />
+<img src="https://github.com/gordon-matt/QueryKrafter/raw/master/_Misc/Logo.png" alt="Logo" width="450" />
 
 A query builder for .NET. People compose rules over fields you define; you turn those rules into SQL or a LINQ predicate on the server, from a configuration you trust.
 
 ## Screenshot
-<img src="https://github.com/gordon-matt/QueryKrafter/blob/master/_Misc/Screenshot.png" alt="Blazor Demo Screenshot" width="100%" />
+<img src="https://github.com/gordon-matt/QueryKrafter/raw/master/_Misc/Screenshot.png" alt="Blazor Demo Screenshot" width="100%" />
 
 The same component works in **Blazor**, **ASP.NET Core MVC / Razor Pages**, and, as a custom element, in **React or any plain HTML page**.
 
@@ -164,6 +164,34 @@ Attributes are kebab-case: `design-mode`, `read-only`, `sql-dialect`, `parameter
 
 English, German, Spanish, French, Brazilian Portuguese, and Simplified Chinese are built in. `AddQueryKrafter(o => o.Directory = "Locales")` loads extra `{tag}.json` files, which override the built-in strings key by key.
 
-## License
 
-Apache-2.0
+## Support
+
+If you find this project useful, consider supporting its development.
+
+<p align="center">
+  <a href="https://buymeacoffee.com/vnmatt">
+    <img src="https://github.com/gordon-matt/MyResume/raw/gh-pages/assets/images/BuyMeACoffee_Logo.png"
+         alt="Buy Me a Coffee"
+         height="40">
+  </a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gordon_matt%40live%2ecom&lc=AU&currency_code=AUD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">
+    <img src="https://github.com/gordon-matt/MyResume/raw/gh-pages/assets/images/PayPal_Logo.png"
+         alt="Donate with PayPal"
+         height="40">
+  </a>
+</p>
+
+<p align="center">
+  Prefer using your phone? Scan the QR code:
+</p>
+
+<p align="center">
+  <a href="https://buymeacoffee.com/vnmatt">
+    <img src="https://github.com/gordon-matt/MyResume/raw/gh-pages/assets/images/BuyMeACoffee_QR.png"
+         alt="Buy Me a Coffee QR Code"
+         width="180">
+  </a>
+</p>
+
+<img src="https://komarev.com/ghpvc/?username=gordon-matt&label=GitHub%20Hits%20Since%202025-06-01%3A%20&color=ff0000&style=flat" alt="gordon-matt" />
