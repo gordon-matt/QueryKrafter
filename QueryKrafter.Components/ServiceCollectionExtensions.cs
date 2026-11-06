@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace QueryKrafter;
 
+/// <summary>
+/// Provides extension methods for components service collections.
+/// </summary>
 public static class ComponentsServiceCollectionExtensions
 {
     extension(IServiceCollection services)

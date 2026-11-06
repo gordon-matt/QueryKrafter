@@ -13,6 +13,12 @@ public static class QueryJson
     private static readonly JsonSerializerOptions Compact = new();
     private static readonly JsonSerializerOptions Indented = new() { WriteIndented = true };
 
+    /// <summary>
+    /// Serializes the value.
+    /// </summary>
+    /// <param name="group">The group.</param>
+    /// <param name="indented">The indented.</param>
+    /// <returns>The string.</returns>
     public static string Serialize(QueryGroup group, bool indented = false) =>
         ToJson(group).ToJsonString(indented ? Indented : Compact);
 
@@ -45,6 +51,11 @@ public static class QueryJson
         _ => throw new JsonException("The root of a query must be a group with a \"rules\" list."),
     };
 
+    /// <summary>
+    /// Converts the value to the JSON.
+    /// </summary>
+    /// <param name="group">The group.</param>
+    /// <returns>The JSON.</returns>
     public static JsonObject ToJson(QueryGroup group)
     {
         var rules = new JsonArray();
@@ -83,6 +94,11 @@ public static class QueryJson
         return json;
     }
 
+    /// <summary>
+    /// Converts the value to the JSON.
+    /// </summary>
+    /// <param name="rule">The rule.</param>
+    /// <returns>The JSON.</returns>
     public static JsonObject ToJson(QueryRule rule)
     {
         var json = new JsonObject
@@ -123,10 +139,21 @@ public static class QueryJson
         return json;
     }
 
+    /// <summary>
+    /// Parses the config.
+    /// </summary>
+    /// <param name="json">The JSON.</param>
+    /// <returns>The config.</returns>
     public static QueryBuilderConfig ParseConfig(string json) =>
         JsonSerializer.Deserialize(json, QueryKrafterJsonContext.Default.QueryBuilderConfig)
             ?? throw new JsonException("The configuration is empty.");
 
+    /// <summary>
+    /// Serializes the config.
+    /// </summary>
+    /// <param name="config">The config.</param>
+    /// <param name="indented">The indented.</param>
+    /// <returns>The config.</returns>
     public static string SerializeConfig(QueryBuilderConfig config, bool indented = false) =>
         JsonSerializer.Serialize(config, indented ? QueryKrafterJsonContext.Indented.QueryBuilderConfig : QueryKrafterJsonContext.Default.QueryBuilderConfig);
 

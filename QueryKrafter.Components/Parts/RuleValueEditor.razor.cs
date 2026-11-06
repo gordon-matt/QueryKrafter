@@ -1,5 +1,8 @@
 namespace QueryKrafter.Components.Parts;
 
+/// <summary>
+/// Represents the rule value editor.
+/// </summary>
 public sealed partial class RuleValueEditor
 {
     private const string DefaultSeparator = ",";
@@ -9,14 +12,29 @@ public sealed partial class RuleValueEditor
     /// <summary>Unique per editor, so radio buttons in different rules don't share a group.</summary>
     private readonly string id = "qk-value-" + Interlocked.Increment(ref instances).ToString(CultureInfo.InvariantCulture);
 
+    /// <summary>
+    /// Gets or sets the builder.
+    /// </summary>
     [CascadingParameter] public QueryBuilder Builder { get; set; } = default!;
 
+    /// <summary>
+    /// Gets or sets the rule.
+    /// </summary>
     [Parameter, EditorRequired] public QueryRule Rule { get; set; } = default!;
 
+    /// <summary>
+    /// Gets or sets the filter.
+    /// </summary>
     [Parameter, EditorRequired] public QueryFilter Filter { get; set; } = default!;
 
+    /// <summary>
+    /// Gets or sets the operator.
+    /// </summary>
     [Parameter, EditorRequired] public QueryOperator Operator { get; set; } = default!;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is disabled.
+    /// </summary>
     [Parameter] public bool Disabled { get; set; }
 
     /// <summary>A list typed into one text box, as <c>in</c> needs, is split on a comma unless the filter names a separator.</summary>

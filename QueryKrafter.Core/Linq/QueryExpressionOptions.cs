@@ -5,8 +5,14 @@ namespace QueryKrafter.Linq;
 /// <summary>Builds a custom operator: the property being filtered and the rule's values, each typed to match the property.</summary>
 public delegate Expression QueryOperatorExpression(Expression property, IReadOnlyList<Expression> values);
 
+/// <summary>
+/// Represents the query expression options.
+/// </summary>
 public sealed record QueryExpressionOptions
 {
+    /// <summary>
+    /// Gets the default.
+    /// </summary>
     public static QueryExpressionOptions Default { get; } = new();
 
     /// <summary>

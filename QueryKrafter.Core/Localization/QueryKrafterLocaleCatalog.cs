@@ -10,10 +10,17 @@ public sealed class QueryKrafterLocaleCatalog : IQueryKrafterLocalizer
     private const string ResourcePrefix = "QueryKrafter.Locales.";
     private const string RtlKey = "@rtl";
 
+    /// <summary>
+    /// Gets the shared.
+    /// </summary>
     public static QueryKrafterLocaleCatalog Shared { get; } = new(new QueryKrafterLocalizationOptions());
 
     private readonly Dictionary<string, Dictionary<string, string>> catalogs = new(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>
+    /// Initializes a new instance of the QueryKrafterLocaleCatalog class.
+    /// </summary>
+    /// <param name="options">The options.</param>
     public QueryKrafterLocaleCatalog(QueryKrafterLocalizationOptions options)
     {
         LoadEmbedded();
@@ -22,8 +29,16 @@ public sealed class QueryKrafterLocaleCatalog : IQueryKrafterLocalizer
         RebuildLanguages();
     }
 
+    /// <summary>
+    /// Gets or sets the languages.
+    /// </summary>
     public IReadOnlyList<QueryKrafterLanguage> Languages { get; private set; } = [];
 
+    /// <summary>
+    /// Resolves the value.
+    /// </summary>
+    /// <param name="languageTag">The language tag.</param>
+    /// <returns>The query krafter text.</returns>
     public QueryKrafterText Resolve(string? languageTag)
     {
         string requested = string.IsNullOrWhiteSpace(languageTag) ? "en" : languageTag.Trim().Replace('_', '-');

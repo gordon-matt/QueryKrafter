@@ -31,11 +31,17 @@ public sealed partial class QueryBuilder : IAsyncDisposable
 
     [Inject] private IServiceProvider Services { get; set; } = default!;
 
+    /// <summary>
+    /// Gets or sets the config.
+    /// </summary>
     [Parameter, EditorRequired] public QueryBuilderConfig Config { get; set; } = new();
 
     /// <summary>The tree to edit, in place. Without it the builder starts with one empty rule.</summary>
     [Parameter] public QueryGroup? Rules { get; set; }
 
+    /// <summary>
+    /// Gets or sets the rules changed.
+    /// </summary>
     [Parameter] public EventCallback<QueryGroup> RulesChanged { get; set; }
 
     /// <summary>Raised after every edit, with the rules and their validation errors.</summary>
@@ -44,6 +50,9 @@ public sealed partial class QueryBuilder : IAsyncDisposable
     /// <summary>Lets rules be hidden from the people who will run the query.</summary>
     [Parameter] public bool DesignMode { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is read only.
+    /// </summary>
     [Parameter] public bool ReadOnly { get; set; }
 
     /// <summary><c>light</c>, <c>dark</c>, <c>auto</c> (follow the OS) or <c>bootstrap</c> (follow the page's Bootstrap 5.3 colours).</summary>
@@ -58,15 +67,27 @@ public sealed partial class QueryBuilder : IAsyncDisposable
     /// <summary>Shows errors on rules the user hasn't touched yet too, as <see cref="Validate"/> does.</summary>
     [Parameter] public bool ShowAllErrors { get; set; }
 
+    /// <summary>
+    /// Gets or sets the class.
+    /// </summary>
     [Parameter] public string? Class { get; set; }
 
+    /// <summary>
+    /// Gets or sets the additional attributes.
+    /// </summary>
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     /// <summary>The rules being edited.</summary>
     public QueryGroup Root => root;
 
+    /// <summary>
+    /// Gets the errors.
+    /// </summary>
     public IReadOnlyList<QueryError> Errors => errors;
 
+    /// <summary>
+    /// Gets a value indicating whether this instance is valid.
+    /// </summary>
     public bool IsValid => errors.Count == 0;
 
     internal QueryKrafterText Text => text;
@@ -80,8 +101,10 @@ public sealed partial class QueryBuilder : IAsyncDisposable
     /// <summary>Errors on rules the people running the query can't see, so can't fix.</summary>
     private int HiddenErrorCount => DesignMode || !ShowErrors ? 0 : errors.Count(e => !IsShown(e.Node));
 
+    /// <inheritdoc/>
     protected override void OnInitialized() => interop = new QueryKrafterInterop(JS);
 
+    /// <inheritdoc/>
     protected override void OnParametersSet()
     {
         string? language = string.IsNullOrWhiteSpace(Language) ? CultureInfo.CurrentUICulture.Name : Language;
@@ -116,6 +139,7 @@ public sealed partial class QueryBuilder : IAsyncDisposable
         Revalidate();
     }
 
+    /// <inheritdoc/>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -143,6 +167,11 @@ public sealed partial class QueryBuilder : IAsyncDisposable
         await NotifyAsync();
     }
 
+    /// <summary>
+    /// Sets the rules.
+    /// </summary>
+    /// <param name="rules">The rules.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public async Task SetRulesAsync(QueryGroup rules)
     {
         root = rules;
@@ -152,6 +181,11 @@ public sealed partial class QueryBuilder : IAsyncDisposable
         await NotifyAsync();
     }
 
+    /// <summary>
+    /// Converts the value to the JSON.
+    /// </summary>
+    /// <param name="indented">The indented.</param>
+    /// <returns>The JSON.</returns>
     public string ToJson(bool indented = false) => QueryJson.Serialize(root, indented);
 
     // ----------------------------------------------------------------- state for the parts
@@ -432,6 +466,10 @@ public sealed partial class QueryBuilder : IAsyncDisposable
 
     private static int Depth(QueryGroup group) => 1 + group.Rules.OfType<QueryGroup>().Select(Depth).DefaultIfEmpty(0).Max();
 
+    /// <summary>
+    /// Releases the resources used by this instance.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public async ValueTask DisposeAsync()
     {
         try

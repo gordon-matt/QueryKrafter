@@ -1,5 +1,8 @@
 namespace QueryKrafter.Sql;
 
+/// <summary>
+/// Specifies the SQL parameter style.
+/// </summary>
 public enum SqlParameterStyle
 {
     /// <summary><c>@p1</c>, for ADO.NET providers and Dapper.</summary>
@@ -24,8 +27,14 @@ public enum SqlParameterStyle
 /// <param name="EscapeLike">Escapes LIKE wildcards in the value before <paramref name="ValueFormat"/> is applied.</param>
 public sealed record SqlOperator(string Template, string ValueFormat = "{0}", bool EscapeLike = false);
 
+/// <summary>
+/// Provides SQL operators.
+/// </summary>
 public static class SqlOperators
 {
+    /// <summary>
+    /// Gets the defaults.
+    /// </summary>
     public static IReadOnlyDictionary<string, SqlOperator> Defaults { get; } = new Dictionary<string, SqlOperator>(StringComparer.Ordinal)
     {
         [QueryOperators.Equal] = new("{field} = {value}"),
@@ -51,13 +60,24 @@ public static class SqlOperators
     };
 }
 
+/// <summary>
+/// Represents the SQL query parameter.
+/// </summary>
+/// <param name="Name">The name.</param>
+/// <param name="Value">The value.</param>
 public sealed record SqlQueryParameter(string Name, object? Value);
 
 /// <summary>A WHERE clause (without the keyword) and its parameters. Empty when the rules don't filter anything.</summary>
 public sealed record SqlQuery(string Sql, IReadOnlyList<SqlQueryParameter> Parameters)
 {
+    /// <summary>
+    /// Gets the empty.
+    /// </summary>
     public static SqlQuery Empty { get; } = new(string.Empty, []);
 
+    /// <summary>
+    /// Gets a value indicating whether this instance is empty.
+    /// </summary>
     public bool IsEmpty => Sql.Length == 0;
 
     /// <summary>The parameters by name, e.g. for Dapper.</summary>
@@ -65,12 +85,24 @@ public sealed record SqlQuery(string Sql, IReadOnlyList<SqlQueryParameter> Param
         Parameters.ToDictionary(p => p.Name, p => p.Value, StringComparer.Ordinal);
 }
 
+/// <summary>
+/// Represents the SQL generator options.
+/// </summary>
 public sealed record SqlGeneratorOptions
 {
+    /// <summary>
+    /// Gets the default.
+    /// </summary>
     public static SqlGeneratorOptions Default { get; } = new();
 
+    /// <summary>
+    /// Gets or sets the dialect.
+    /// </summary>
     public SqlDialect Dialect { get; init; } = SqlDialect.Ansi;
 
+    /// <summary>
+    /// Gets or sets the parameter style.
+    /// </summary>
     public SqlParameterStyle ParameterStyle { get; init; } = SqlParameterStyle.Named;
 
     /// <summary>Parameters are named this followed by their position: <c>p1</c>, <c>p2</c>…</summary>

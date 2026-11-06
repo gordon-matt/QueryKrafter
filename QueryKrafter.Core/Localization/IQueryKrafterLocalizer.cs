@@ -6,8 +6,16 @@ public sealed record QueryKrafterLanguage(string Tag, string NativeName, bool Is
 /// <summary>Loads JSON catalogs and resolves a tag, including fallback to English.</summary>
 public interface IQueryKrafterLocalizer
 {
+    /// <summary>
+    /// Resolves the value.
+    /// </summary>
+    /// <param name="languageTag">The language tag.</param>
+    /// <returns>The query krafter text.</returns>
     QueryKrafterText Resolve(string? languageTag);
 
+    /// <summary>
+    /// Gets the languages.
+    /// </summary>
     IReadOnlyList<QueryKrafterLanguage> Languages { get; }
 }
 

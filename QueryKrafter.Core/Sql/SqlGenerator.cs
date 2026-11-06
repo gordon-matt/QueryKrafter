@@ -13,6 +13,13 @@ namespace QueryKrafter.Sql;
 /// </summary>
 public static class SqlGenerator
 {
+    /// <summary>
+    /// Generates the value.
+    /// </summary>
+    /// <param name="root">The root.</param>
+    /// <param name="config">The config.</param>
+    /// <param name="options">The options.</param>
+    /// <returns>The outcome for the SQL query.</returns>
     public static Result<SqlQuery> Generate(QueryGroup root, QueryBuilderConfig config, SqlGeneratorOptions? options = null)
     {
         var check = QueryValidator.ToResult(QueryValidator.Validate(root, config), config);

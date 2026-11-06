@@ -4,24 +4,45 @@ namespace QueryKrafter.Models;
 [JsonConverter(typeof(JsonStringEnumConverter<QueryValueType>))]
 public enum QueryValueType
 {
+    /// <summary>
+    /// The string value.
+    /// </summary>
     [JsonStringEnumMemberName("string")]
     String,
 
+    /// <summary>
+    /// The integer value.
+    /// </summary>
     [JsonStringEnumMemberName("integer")]
     Integer,
 
+    /// <summary>
+    /// The double value.
+    /// </summary>
     [JsonStringEnumMemberName("double")]
     Double,
 
+    /// <summary>
+    /// The date value.
+    /// </summary>
     [JsonStringEnumMemberName("date")]
     Date,
 
+    /// <summary>
+    /// The time value.
+    /// </summary>
     [JsonStringEnumMemberName("time")]
     Time,
 
+    /// <summary>
+    /// The date time value.
+    /// </summary>
     [JsonStringEnumMemberName("datetime")]
     DateTime,
 
+    /// <summary>
+    /// The boolean value.
+    /// </summary>
     [JsonStringEnumMemberName("boolean")]
     Boolean,
 }
@@ -31,21 +52,39 @@ public enum QueryValueType
 [JsonConverter(typeof(JsonStringEnumConverter<QueryValueKind>))]
 public enum QueryValueKind
 {
+    /// <summary>
+    /// The none value.
+    /// </summary>
     [JsonStringEnumMemberName("none")]
     None = 0,
 
+    /// <summary>
+    /// The string value.
+    /// </summary>
     [JsonStringEnumMemberName("string")]
     String = 1,
 
+    /// <summary>
+    /// The number value.
+    /// </summary>
     [JsonStringEnumMemberName("number")]
     Number = 2,
 
+    /// <summary>
+    /// The date time value.
+    /// </summary>
     [JsonStringEnumMemberName("datetime")]
     DateTime = 4,
 
+    /// <summary>
+    /// The boolean value.
+    /// </summary>
     [JsonStringEnumMemberName("boolean")]
     Boolean = 8,
 
+    /// <summary>
+    /// The all value.
+    /// </summary>
     [JsonStringEnumMemberName("all")]
     All = String | Number | DateTime | Boolean,
 }
@@ -54,30 +93,57 @@ public enum QueryValueKind
 [JsonConverter(typeof(JsonStringEnumConverter<QueryInputType>))]
 public enum QueryInputType
 {
+    /// <summary>
+    /// The text value.
+    /// </summary>
     [JsonStringEnumMemberName("text")]
     Text,
 
+    /// <summary>
+    /// The number value.
+    /// </summary>
     [JsonStringEnumMemberName("number")]
     Number,
 
+    /// <summary>
+    /// The text area value.
+    /// </summary>
     [JsonStringEnumMemberName("textarea")]
     TextArea,
 
+    /// <summary>
+    /// The radio value.
+    /// </summary>
     [JsonStringEnumMemberName("radio")]
     Radio,
 
+    /// <summary>
+    /// The checkbox value.
+    /// </summary>
     [JsonStringEnumMemberName("checkbox")]
     Checkbox,
 
+    /// <summary>
+    /// The select value.
+    /// </summary>
     [JsonStringEnumMemberName("select")]
     Select,
 
+    /// <summary>
+    /// The date value.
+    /// </summary>
     [JsonStringEnumMemberName("date")]
     Date,
 
+    /// <summary>
+    /// The time value.
+    /// </summary>
     [JsonStringEnumMemberName("time")]
     Time,
 
+    /// <summary>
+    /// The date time value.
+    /// </summary>
     [JsonStringEnumMemberName("datetime")]
     DateTime,
 }
@@ -86,6 +152,9 @@ public enum QueryInputType
 [JsonConverter(typeof(JsonStringEnumConverter<UniqueScope>))]
 public enum UniqueScope
 {
+    /// <summary>
+    /// The none value.
+    /// </summary>
     [JsonStringEnumMemberName("none")]
     None,
 
@@ -98,10 +167,16 @@ public enum UniqueScope
     Group,
 }
 
+/// <summary>
+/// Provides extension methods for query value types.
+/// </summary>
 public static class QueryValueTypeExtensions
 {
     extension(QueryValueType type)
     {
+        /// <summary>
+        /// Gets the kind.
+        /// </summary>
         public QueryValueKind Kind => type switch
         {
             QueryValueType.Integer or QueryValueType.Double => QueryValueKind.Number,
@@ -136,6 +211,9 @@ public static class QueryValueTypeExtensions
 
     extension(QueryInputType input)
     {
+        /// <summary>
+        /// Gets the JSON name.
+        /// </summary>
         public string JsonName => input switch
         {
             QueryInputType.Number => "number",
@@ -153,6 +231,11 @@ public static class QueryValueTypeExtensions
         public bool HasOptions => input is QueryInputType.Radio or QueryInputType.Checkbox or QueryInputType.Select;
     }
 
+    /// <summary>
+    /// Parses the value type.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <returns>The value type.</returns>
     public static QueryValueType? ParseValueType(string? name) => name?.ToLowerInvariant() switch
     {
         "string" => QueryValueType.String,
@@ -165,6 +248,11 @@ public static class QueryValueTypeExtensions
         _ => null,
     };
 
+    /// <summary>
+    /// Parses the input type.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <returns>The input type.</returns>
     public static QueryInputType? ParseInputType(string? name) => name?.ToLowerInvariant() switch
     {
         "text" => QueryInputType.Text,

@@ -21,6 +21,9 @@ public sealed record QueryFilter
     /// <summary>The member path the LINQ builder filters on, e.g. <c>Customer.Name</c>. Defaults to <see cref="Id"/>.</summary>
     public string? Property { get; init; }
 
+    /// <summary>
+    /// Gets or sets the type.
+    /// </summary>
     public QueryValueType Type { get; init; } = QueryValueType.String;
 
     /// <summary>Defaults to the usual input for <see cref="Type"/>, or a drop-down when <see cref="Values"/> are given.</summary>
@@ -29,6 +32,9 @@ public sealed record QueryFilter
     /// <summary>The operator types offered, in this order. Defaults to every operator that applies to <see cref="Type"/>.</summary>
     public IReadOnlyList<string>? Operators { get; init; }
 
+    /// <summary>
+    /// Gets or sets the default operator.
+    /// </summary>
     public string? DefaultOperator { get; init; }
 
     /// <summary>The value a new rule on this filter starts with.</summary>
@@ -38,6 +44,9 @@ public sealed record QueryFilter
     /// <summary>Null when JSON omits it: deserialization goes through the record constructor, which skips the initializer.</summary>
     private readonly IReadOnlyList<QueryFilterOption>? values;
 
+    /// <summary>
+    /// Gets or sets the values.
+    /// </summary>
     public IReadOnlyList<QueryFilterOption> Values
     {
         get => values ?? [];
@@ -53,6 +62,9 @@ public sealed record QueryFilter
     /// </summary>
     public string? ValueSeparator { get; init; }
 
+    /// <summary>
+    /// Gets or sets the placeholder.
+    /// </summary>
     public string? Placeholder { get; init; }
 
     /// <summary>A heading the filter is listed under.</summary>
@@ -67,6 +79,9 @@ public sealed record QueryFilter
     /// <summary>Help text shown beside the rule.</summary>
     public string? Description { get; init; }
 
+    /// <summary>
+    /// Gets or sets the unique.
+    /// </summary>
     public UniqueScope Unique { get; init; }
 
     /// <summary>Stacks radio and checkbox choices instead of laying them out in a row.</summary>
@@ -77,6 +92,9 @@ public sealed record QueryFilter
 
     private readonly QueryFilterValidation? validation;
 
+    /// <summary>
+    /// Gets or sets the validation.
+    /// </summary>
     public QueryFilterValidation Validation
     {
         get => validation ?? QueryFilterValidation.None;
@@ -86,13 +104,25 @@ public sealed record QueryFilter
     /// <summary>Copied into the <c>data</c> of rules on this filter, for your own use.</summary>
     public JsonObject? Data { get; init; }
 
+    /// <summary>
+    /// Gets the display label.
+    /// </summary>
     [JsonIgnore]
     public string DisplayLabel => string.IsNullOrWhiteSpace(Label) ? Id : Label;
 
+    /// <summary>
+    /// Gets the effective input.
+    /// </summary>
     [JsonIgnore]
     public QueryInputType EffectiveInput => Input ?? (Values.Count > 0 && Type != QueryValueType.Boolean ? QueryInputType.Select : Type.DefaultInput);
 }
 
+/// <summary>
+/// Represents the query filter option.
+/// </summary>
+/// <param name="Value">The value.</param>
+/// <param name="Label">The label.</param>
+/// <param name="Group">The group.</param>
 [JsonConverter(typeof(QueryFilterOptionJsonConverter))]
 public sealed record QueryFilterOption(string Value, string Label, string? Group = null);
 
@@ -102,17 +132,32 @@ public sealed record QueryFilterOption(string Value, string Label, string? Group
 /// </summary>
 public sealed record QueryFilterValidation
 {
+    /// <summary>
+    /// Gets the none.
+    /// </summary>
     public static QueryFilterValidation None { get; } = new();
 
+    /// <summary>
+    /// Gets or sets the min.
+    /// </summary>
     public string? Min { get; init; }
 
+    /// <summary>
+    /// Gets or sets the max.
+    /// </summary>
     public string? Max { get; init; }
 
+    /// <summary>
+    /// Gets or sets the step.
+    /// </summary>
     public double? Step { get; init; }
 
     /// <summary>A regular expression text values must match.</summary>
     public string? Format { get; init; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is allow empty value.
+    /// </summary>
     public bool AllowEmptyValue { get; init; }
 
     /// <summary>Replaces the message for an error code, e.g. <c>string_exceed_max_length</c>.</summary>

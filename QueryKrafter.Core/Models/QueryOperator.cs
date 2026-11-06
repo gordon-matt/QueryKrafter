@@ -16,6 +16,9 @@ public sealed record QueryOperator
     /// <summary>Each input takes a list of values, as <c>in</c> does.</summary>
     public bool Multiple { get; init; }
 
+    /// <summary>
+    /// Gets or sets the applies to.
+    /// </summary>
     public QueryValueKind AppliesTo { get; init; } = QueryValueKind.All;
 
     /// <summary>Shown when the language catalog has no <c>operators.{type}</c> entry.</summary>
@@ -28,27 +31,90 @@ public sealed record QueryOperator
     public string? Opposite { get; init; }
 }
 
+/// <summary>
+/// Provides query operators.
+/// </summary>
 public static class QueryOperators
 {
+    /// <summary>
+    /// The equal constant.
+    /// </summary>
     public const string Equal = "equal";
+    /// <summary>
+    /// The not equal constant.
+    /// </summary>
     public const string NotEqual = "not_equal";
+    /// <summary>
+    /// The in constant.
+    /// </summary>
     public const string In = "in";
+    /// <summary>
+    /// The not in constant.
+    /// </summary>
     public const string NotIn = "not_in";
+    /// <summary>
+    /// The less constant.
+    /// </summary>
     public const string Less = "less";
+    /// <summary>
+    /// The less or equal constant.
+    /// </summary>
     public const string LessOrEqual = "less_or_equal";
+    /// <summary>
+    /// The greater constant.
+    /// </summary>
     public const string Greater = "greater";
+    /// <summary>
+    /// The greater or equal constant.
+    /// </summary>
     public const string GreaterOrEqual = "greater_or_equal";
+    /// <summary>
+    /// The between constant.
+    /// </summary>
     public const string Between = "between";
+    /// <summary>
+    /// The not between constant.
+    /// </summary>
     public const string NotBetween = "not_between";
+    /// <summary>
+    /// The begins with constant.
+    /// </summary>
     public const string BeginsWith = "begins_with";
+    /// <summary>
+    /// The not begins with constant.
+    /// </summary>
     public const string NotBeginsWith = "not_begins_with";
+    /// <summary>
+    /// The contains constant.
+    /// </summary>
     public const string Contains = "contains";
+    /// <summary>
+    /// The not contains constant.
+    /// </summary>
     public const string NotContains = "not_contains";
+    /// <summary>
+    /// The ends with constant.
+    /// </summary>
     public const string EndsWith = "ends_with";
+    /// <summary>
+    /// The not ends with constant.
+    /// </summary>
     public const string NotEndsWith = "not_ends_with";
+    /// <summary>
+    /// The is empty constant.
+    /// </summary>
     public const string IsEmpty = "is_empty";
+    /// <summary>
+    /// The is not empty constant.
+    /// </summary>
     public const string IsNotEmpty = "is_not_empty";
+    /// <summary>
+    /// The is null constant.
+    /// </summary>
     public const string IsNull = "is_null";
+    /// <summary>
+    /// The is not null constant.
+    /// </summary>
     public const string IsNotNull = "is_not_null";
 
     private const QueryValueKind Any = QueryValueKind.All;
@@ -56,6 +122,9 @@ public static class QueryOperators
     private const QueryValueKind Listable = QueryValueKind.String | QueryValueKind.Number | QueryValueKind.DateTime;
     private const QueryValueKind Text = QueryValueKind.String;
 
+    /// <summary>
+    /// Gets the defaults.
+    /// </summary>
     public static IReadOnlyList<QueryOperator> Defaults { get; } =
     [
         new() { Type = Equal, AppliesTo = Any, Opposite = NotEqual },

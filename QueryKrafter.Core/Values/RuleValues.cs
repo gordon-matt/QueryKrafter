@@ -98,6 +98,13 @@ public static class RuleValues
         SetNode(rule, op, input, node);
     }
 
+    /// <summary>
+    /// Sets the node.
+    /// </summary>
+    /// <param name="rule">The rule.</param>
+    /// <param name="op">The op.</param>
+    /// <param name="input">The input.</param>
+    /// <param name="node">The node.</param>
     public static void SetNode(QueryRule rule, QueryOperator op, int input, JsonNode? node)
     {
         if (op.InputCount <= 1)

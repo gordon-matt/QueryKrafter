@@ -12,21 +12,40 @@ public abstract class QueryNode
     /// <summary>Your own data, kept with the node through JSON round trips.</summary>
     public JsonObject? Data { get; set; }
 
+    /// <summary>
+    /// Clones the value.
+    /// </summary>
+    /// <returns>The query node.</returns>
     public abstract QueryNode Clone();
 }
 
+/// <summary>
+/// Represents the query group.
+/// </summary>
 [JsonConverter(typeof(QueryGroupJsonConverter))]
 public sealed class QueryGroup : QueryNode
 {
+    /// <summary>
+    /// Gets or sets the condition.
+    /// </summary>
     public string Condition { get; set; } = Constants.Conditions.And;
 
     /// <summary>Negates the whole group.</summary>
     public bool Not { get; set; }
 
+    /// <summary>
+    /// Gets or sets the rules.
+    /// </summary>
     public List<QueryNode> Rules { get; set; } = [];
 
+    /// <summary>
+    /// Gets or sets the flags.
+    /// </summary>
     public GroupFlags Flags { get; set; } = GroupFlags.None;
 
+    /// <summary>
+    /// Gets a value indicating whether this instance is empty.
+    /// </summary>
     [JsonIgnore]
     public bool IsEmpty => Rules.Count == 0;
 
@@ -57,8 +76,14 @@ public sealed class QueryGroup : QueryNode
         return null;
     }
 
+    /// <summary>
+    /// Determines whether the collection contains the specified value.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <returns>true when the condition is met; otherwise, false.</returns>
     public bool Contains(QueryNode node) => ParentOf(node) is not null;
 
+    /// <inheritdoc/>
     public override QueryGroup Clone() => new()
     {
         Condition = Condition,
@@ -69,6 +94,9 @@ public sealed class QueryGroup : QueryNode
     };
 }
 
+/// <summary>
+/// Represents the query rule.
+/// </summary>
 [JsonConverter(typeof(QueryRuleJsonConverter))]
 public sealed class QueryRule : QueryNode
 {
@@ -78,10 +106,19 @@ public sealed class QueryRule : QueryNode
     /// <summary>The filter's field, written to JSON for other tools. The SQL generator doesn't read it.</summary>
     public string? Field { get; set; }
 
+    /// <summary>
+    /// Gets or sets the type.
+    /// </summary>
     public QueryValueType? Type { get; set; }
 
+    /// <summary>
+    /// Gets or sets the input.
+    /// </summary>
     public QueryInputType? Input { get; set; }
 
+    /// <summary>
+    /// Gets or sets the operator.
+    /// </summary>
     public string? Operator { get; set; }
 
     /// <summary>
@@ -96,6 +133,9 @@ public sealed class QueryRule : QueryNode
     /// </summary>
     public bool Hidden { get; set; }
 
+    /// <summary>
+    /// Gets or sets the flags.
+    /// </summary>
     public RuleFlags Flags { get; set; } = RuleFlags.None;
 
     /// <summary>Points the rule at <paramref name="filter"/> and records its field, type and input.</summary>
@@ -107,6 +147,7 @@ public sealed class QueryRule : QueryNode
         Input = filter?.EffectiveInput;
     }
 
+    /// <inheritdoc/>
     public override QueryRule Clone() => new()
     {
         Id = Id,

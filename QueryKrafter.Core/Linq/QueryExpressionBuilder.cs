@@ -13,6 +13,9 @@ namespace QueryKrafter.Linq;
 /// </summary>
 public static class QueryExpressionBuilder
 {
+    /// <summary>
+    /// The reflection message constant.
+    /// </summary>
     public const string ReflectionMessage = "Properties are looked up by name and generic methods are made at run time.";
 
     private static readonly MethodInfo StartsWithMethod = typeof(string).GetMethod(nameof(string.StartsWith), [typeof(string)])!;
@@ -23,6 +26,14 @@ public static class QueryExpressionBuilder
     private static readonly MethodInfo EnumerableContainsMethod = typeof(Enumerable).GetMethods()
         .Single(m => m.Name == nameof(Enumerable.Contains) && m.GetParameters().Length == 2);
 
+    /// <summary>
+    /// Builds the value.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <param name="root">The root.</param>
+    /// <param name="config">The config.</param>
+    /// <param name="options">The options.</param>
+    /// <returns>The outcome for the t, bool func expression.</returns>
     [RequiresUnreferencedCode(ReflectionMessage)]
     [RequiresDynamicCode(ReflectionMessage)]
     public static Result<Expression<Func<T, bool>>> Build<T>(QueryGroup root, QueryBuilderConfig config, QueryExpressionOptions? options = null)

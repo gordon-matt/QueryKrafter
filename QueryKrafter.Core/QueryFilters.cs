@@ -14,9 +14,19 @@ public static class QueryFilters
 {
     private const string ReflectionMessage = "Reads the type's properties and enumeration members by reflection.";
 
+    /// <summary>
+    /// Creates a value from the type.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <returns>The type.</returns>
     [RequiresUnreferencedCode(ReflectionMessage)]
     public static IReadOnlyList<QueryFilter> FromType<T>() => FromType(typeof(T));
 
+    /// <summary>
+    /// Creates a value from the type.
+    /// </summary>
+    /// <param name="type">The type.</param>
+    /// <returns>The type.</returns>
     [RequiresUnreferencedCode(ReflectionMessage)]
     public static IReadOnlyList<QueryFilter> FromType(Type type) =>
     [

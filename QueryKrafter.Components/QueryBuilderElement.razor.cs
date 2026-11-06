@@ -33,15 +33,27 @@ public sealed partial class QueryBuilderElement : IAsyncDisposable
     /// <summary>Rules in the jQuery QueryBuilder JSON format. Changing it replaces the rules being edited.</summary>
     [Parameter] public string? Rules { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is design mode.
+    /// </summary>
     [Parameter] public bool DesignMode { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is read only.
+    /// </summary>
     [Parameter] public bool ReadOnly { get; set; }
 
     /// <summary><c>light</c>, <c>dark</c>, <c>auto</c> or <c>bootstrap</c>.</summary>
     [Parameter] public string Theme { get; set; } = Constants.Themes.Light;
 
+    /// <summary>
+    /// Gets or sets the language.
+    /// </summary>
     [Parameter] public string? Language { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is show errors.
+    /// </summary>
     [Parameter] public bool ShowErrors { get; set; } = true;
 
     /// <summary>Shows errors on untouched rules too, e.g. once the user has tried to submit.</summary>
@@ -60,10 +72,15 @@ public sealed partial class QueryBuilderElement : IAsyncDisposable
     /// <summary>Renders a hidden input with this name holding the rules JSON, for posting with a form.</summary>
     [Parameter] public string? Name { get; set; }
 
+    /// <summary>
+    /// Gets or sets the class.
+    /// </summary>
     [Parameter] public string? Class { get; set; }
 
+    /// <inheritdoc/>
     protected override void OnInitialized() => interop = new QueryKrafterInterop(JS);
 
+    /// <inheritdoc/>
     protected override void OnParametersSet()
     {
         if (!string.Equals(Config, appliedConfig, StringComparison.Ordinal))
@@ -98,6 +115,7 @@ public sealed partial class QueryBuilderElement : IAsyncDisposable
         }
     }
 
+    /// <inheritdoc/>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -218,6 +236,10 @@ public sealed partial class QueryBuilderElement : IAsyncDisposable
         _ => JsonValue.Create(Convert.ToString(value, CultureInfo.InvariantCulture)),
     };
 
+    /// <summary>
+    /// Releases the resources used by this instance.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public async ValueTask DisposeAsync()
     {
         try

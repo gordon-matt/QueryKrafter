@@ -6,22 +6,49 @@ namespace QueryKrafter.Sql;
 /// </summary>
 public abstract class SqlDialect
 {
+    /// <summary>
+    /// Gets the ansi.
+    /// </summary>
     public static SqlDialect Ansi { get; } = new AnsiSqlDialect();
 
+    /// <summary>
+    /// Gets the SQL server.
+    /// </summary>
     public static SqlDialect SqlServer { get; } = new SqlServerDialect();
 
+    /// <summary>
+    /// Gets the postgre SQL.
+    /// </summary>
     public static SqlDialect PostgreSql { get; } = new PostgreSqlDialect();
 
+    /// <summary>
+    /// Gets the my SQL.
+    /// </summary>
     public static SqlDialect MySql { get; } = new MySqlDialect();
 
+    /// <summary>
+    /// Gets the sqlite.
+    /// </summary>
     public static SqlDialect Sqlite { get; } = new SqliteDialect();
 
+    /// <summary>
+    /// Gets the all.
+    /// </summary>
     public static IReadOnlyList<SqlDialect> All { get; } = [Ansi, SqlServer, PostgreSql, MySql, Sqlite];
 
+    /// <summary>
+    /// Gets the name.
+    /// </summary>
     public abstract string Name { get; }
 
+    /// <summary>
+    /// Gets the open quote.
+    /// </summary>
     protected virtual string OpenQuote => "\"";
 
+    /// <summary>
+    /// Gets the close quote.
+    /// </summary>
     protected virtual string CloseQuote => "\"";
 
     /// <summary>Put before a parameter name for <see cref="SqlParameterStyle.Named"/>.</summary>
@@ -45,9 +72,19 @@ public abstract class SqlDialect
     public virtual string QuoteIdentifier(string name) =>
         string.Join('.', name.Split('.').Select(part => OpenQuote + part.Replace(CloseQuote, CloseQuote + CloseQuote, StringComparison.Ordinal) + CloseQuote));
 
+    /// <summary>
+    /// Formats the string.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The string.</returns>
     public virtual string FormatString(string text) =>
         "'" + text.Replace("'", "''", StringComparison.Ordinal) + "'";
 
+    /// <summary>
+    /// Formats the boolean.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>The boolean.</returns>
     public virtual string FormatBoolean(bool value) => value ? "TRUE" : "FALSE";
 
     /// <summary>Writes a value as a literal, for <see cref="SqlParameterStyle.Inline"/>.</summary>
@@ -74,6 +111,13 @@ public abstract class SqlDialect
         .Replace("%", "\\%", StringComparison.Ordinal)
         .Replace("_", "\\_", StringComparison.Ordinal);
 
+    /// <summary>
+    /// Gets the parameter.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <param name="position">The position.</param>
+    /// <param name="style">The style.</param>
+    /// <returns>The parameter.</returns>
     public virtual string Parameter(string name, int position, SqlParameterStyle style) => style switch
     {
         SqlParameterStyle.Positional => "?",
@@ -81,52 +125,76 @@ public abstract class SqlDialect
         _ => NamedParameterMarker + name,
     };
 
+    /// <inheritdoc/>
     public override string ToString() => Name;
 
     private static bool IsNumeric(object value) =>
         value is byte or sbyte or short or ushort or int or uint or long or ulong or decimal;
 }
 
+/// <summary>
+/// Represents the ansi SQL dialect.
+/// </summary>
 public sealed class AnsiSqlDialect : SqlDialect
 {
+    /// <inheritdoc/>
     public override string Name => "ansi";
 }
 
+/// <summary>
+/// Represents the SQL server dialect.
+/// </summary>
 public sealed class SqlServerDialect : SqlDialect
 {
+    /// <inheritdoc/>
     public override string Name => "sqlserver";
 
+    /// <inheritdoc/>
     protected override string OpenQuote => "[";
 
+    /// <inheritdoc/>
     protected override string CloseQuote => "]";
 
     /// <summary>Wildcards are escaped with brackets, which need no ESCAPE clause.</summary>
     public override string LikeEscapeClause => string.Empty;
 
+    /// <inheritdoc/>
     public override string FormatString(string text) => "N" + base.FormatString(text);
 
+    /// <inheritdoc/>
     public override string FormatBoolean(bool value) => value ? "1" : "0";
 
+    /// <inheritdoc/>
     public override string EscapeLike(string text) => text
         .Replace("[", "[[]", StringComparison.Ordinal)
         .Replace("%", "[%]", StringComparison.Ordinal)
         .Replace("_", "[_]", StringComparison.Ordinal);
 }
 
+/// <summary>
+/// Represents the postgre SQL dialect.
+/// </summary>
 public sealed class PostgreSqlDialect : SqlDialect
 {
+    /// <inheritdoc/>
     public override string Name => "postgresql";
 
     /// <summary>Backslash is already LIKE's escape character.</summary>
     public override string LikeEscapeClause => string.Empty;
 }
 
+/// <summary>
+/// Represents the my SQL dialect.
+/// </summary>
 public sealed class MySqlDialect : SqlDialect
 {
+    /// <inheritdoc/>
     public override string Name => "mysql";
 
+    /// <inheritdoc/>
     protected override string OpenQuote => "`";
 
+    /// <inheritdoc/>
     protected override string CloseQuote => "`";
 
     /// <summary>Backslash is already LIKE's escape character.</summary>
@@ -137,9 +205,14 @@ public sealed class MySqlDialect : SqlDialect
         "'" + text.Replace("\\", "\\\\", StringComparison.Ordinal).Replace("'", "''", StringComparison.Ordinal) + "'";
 }
 
+/// <summary>
+/// Represents the sqlite dialect.
+/// </summary>
 public sealed class SqliteDialect : SqlDialect
 {
+    /// <inheritdoc/>
     public override string Name => "sqlite";
 
+    /// <inheritdoc/>
     public override string FormatBoolean(bool value) => value ? "1" : "0";
 }

@@ -11,6 +11,11 @@ public static class QueryValueParser
     private static readonly string[] DateFormats = ["yyyy-MM-dd", "yyyy-M-d"];
     private static readonly string[] TimeFormats = ["HH:mm", "HH:mm:ss", "HH:mm:ss.FFFFFFF", "H:mm", "H:mm:ss"];
 
+    /// <summary>
+    /// Determines whether this instance is empty.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <returns>true when the condition is met; otherwise, false.</returns>
     public static bool IsEmpty(JsonNode? node) => node switch
     {
         null => true,
@@ -19,6 +24,13 @@ public static class QueryValueParser
         _ => false,
     };
 
+    /// <summary>
+    /// Attempts to parse.
+    /// </summary>
+    /// <param name="node">The node.</param>
+    /// <param name="type">The type.</param>
+    /// <param name="value">When this method returns, contains the value.</param>
+    /// <returns>true when the condition is met; otherwise, false.</returns>
     public static bool TryParse(JsonNode? node, QueryValueType type, out object? value)
     {
         value = null;
@@ -101,6 +113,11 @@ public static class QueryValueParser
     /// <summary>Whether the value is a number at all, to tell "not a number" from "not an integer".</summary>
     internal static bool IsNumber(JsonValue json) => TryDecimal(json, out _) || TryDouble(json, out _);
 
+    /// <summary>
+    /// Converts the value to the text.
+    /// </summary>
+    /// <param name="json">The JSON.</param>
+    /// <returns>The text.</returns>
     public static string ToText(JsonValue json)
     {
         if (json.TryGetValue(out string? text))
@@ -116,6 +133,12 @@ public static class QueryValueParser
         return json.ToJsonString();
     }
 
+    /// <summary>
+    /// Attempts to date.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="date">When this method returns, contains the date.</param>
+    /// <returns>true when the condition is met; otherwise, false.</returns>
     public static bool TryDate(string? text, out DateOnly date)
     {
         if (DateOnly.TryParseExact(text?.Trim(), DateFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
@@ -132,9 +155,21 @@ public static class QueryValueParser
         return false;
     }
 
+    /// <summary>
+    /// Attempts to time.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="time">When this method returns, contains the time.</param>
+    /// <returns>true when the condition is met; otherwise, false.</returns>
     public static bool TryTime(string? text, out TimeOnly time) =>
         TimeOnly.TryParseExact(text?.Trim(), TimeFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out time);
 
+    /// <summary>
+    /// Attempts to date time.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="dateTime">When this method returns, contains the date time.</param>
+    /// <returns>true when the condition is met; otherwise, false.</returns>
     public static bool TryDateTime(string? text, out DateTime dateTime) =>
         DateTime.TryParse(text?.Trim(), CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.RoundtripKind, out dateTime);
 
