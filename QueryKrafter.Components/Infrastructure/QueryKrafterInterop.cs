@@ -6,7 +6,7 @@ namespace QueryKrafter.Components.Infrastructure;
 /// </summary>
 internal sealed class QueryKrafterInterop(IJSRuntime js) : IAsyncDisposable
 {
-    private const string ModulePath = "./_content/QueryKrafter.Components/querykrafter.js";
+    private const string ModulePath = "/_content/QueryKrafter.Components/querykrafter.js";
 
     private Task<IJSObjectReference>? module;
 

@@ -1,3 +1,5 @@
+using Heroicsoft.NetForge.WebAssets;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -18,6 +20,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAntiforgery();
 app.MapStaticAssets();
+app.MapEmbeddedContent(typeof(QueryBuilder).Assembly);
 app.MapControllers();
 app.MapBlazorHub();
 app.Run();

@@ -1,3 +1,4 @@
+using Heroicsoft.NetForge.WebAssets;
 using QueryKrafter.Demo.Blazor.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,5 +17,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAntiforgery();
 app.MapStaticAssets();
+app.MapEmbeddedContent(typeof(QueryBuilder).Assembly);
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 app.Run();
