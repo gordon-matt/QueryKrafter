@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Heroicsoft.NetForge.WebAssets" Version="1.2.6" />
+		<PackageReference Include="Heroicsoft.NetForge.WebAssets" />
 		<ProjectReference Include="..\QueryKrafter.Components\QueryKrafter.Components.csproj" />
 	</ItemGroup>
 
